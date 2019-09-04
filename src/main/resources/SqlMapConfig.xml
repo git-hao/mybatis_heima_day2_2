@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<!-- 与spring整合后，配置在spring配置文件中，不再需要此配置文件 -->
+<configuration>
+
+    <!--可以标签内配置数据库信息，也引用外部配置文件
+    resource：常用属性，指定配置文件位置，按照类路径写，并且必须位于类路径下
+    url:按照url格式写地址
+        URL:Uniform Resource Locator 统一资源定位符，唯一标识一个资源的位置
+        格式：http://locahost:8080/mybatis/demo
+              协议   主机     端口号  URI
+              URI：Uniform Resource Identifier 统一资源标识符。在应用中唯一定位一个资源
+    -->
+    <!--<properties url="file:///C:/code/ideaworkspace/mybatis/mybatis_heima_day2_2/src/main/resources/jdbcConfig.properties">-->
+    <properties resource="jdbcConfig.properties">
+        <!--<property name="driver" value="com.mysql.jdbc.Driver"></property>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/test"></property>-->
+        <!--<property name="username" value="root"></property>-->
+        <!--<property name="password" value="mysql2233"></property>-->
+    </properties>
+
+    <!--配置别名，只能配置实体类中类的别名-->
+<typeAliases>
+    <!-- typeAlias：配置别名，type：实体类全限定类名 alias：指定别名，不区分大小写-->
+    <!--<typeAlias type="com.hao.domain.User" alias="user"></typeAlias>-->
+    <!-- package：配置包里的所有实体类，且实体类名就是别名 -->
+    <package name="com.hao.domain"></package>
+</typeAliases>
+
+    <!--环境配置，连接的数据库，这里使用的是MySQL-->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--指定事务管理的类型，这里简单使用Java的JDBC的提交和回滚设置-->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--dataSource 指连接源配置，POOLED是JDBC连接对象的数据源连接池的实现-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"></property>
+                <property name="url" value="${jdbc.url}"></property>
+                <property name="username" value="${jdbc.username}"></property>
+                <property name="password" value="${jdbc.password}"></property>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--使用.xml配置文件，对于在src下的文件直接写文件名，
+            如果在某包下，则要写明路径,如：com/mybatistest/config/User.xml-->
+        <!--<mapper resource="com/UserDao.xml"></mapper>-->
+        <!-- 指定dao接口所在的包，指定后不需要再写mapper，resource，class -->
+        <package name="com.hao.dao"></package>
+    </mappers>
+</configuration>
